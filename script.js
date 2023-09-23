@@ -5,6 +5,17 @@ document.getElementById("calculate").addEventListener("click", calculateDelivery
             const end = document.getElementById("end").value;
             const startDateString = document.getElementById("startDate").value;
             const startDate = new Date(startDateString);
+
+            const shortestRoute =document.getElementById("route");
+            const shortestRouteStart =document.getElementById("startResult");
+            const shortestEndStart =document.getElementById("endResult");
+            const routeResult = document.getElementById("result");
+            routeResult.textContent = "";
+
+
+            shortestRoute.innerHTML = "";
+            shortestRouteStart.innerHTML = "";
+            shortestEndStart.innerHTML = "";
             
             const routeMap = {
                 "Tirunelveli": {
@@ -52,9 +63,14 @@ document.getElementById("calculate").addEventListener("click", calculateDelivery
                 }
             }
             
-            const formattedEndDate = currentDate.toLocaleDateString();
+            const dateOfEnd = currentDate.getDate();
+            const monthOfEnd = currentDate.toLocaleString('default', { month: 'long' });
             const route = result.route.join(" -> ");
-            document.getElementById("result").textContent = `Route: ${route}\nTotal Days: ${result.days}\n ${startDate +"->"}\n Arrive on: ${formattedEndDate}`;
+            const dateOfStart = startDate.getDate();
+            const monthOfStart = startDate.toLocaleString('default', { month: 'long' });
+            shortestRoute.textContent = `Route: ${route}\nTotal Days: ${result.days + " Days"}`;
+            shortestRouteStart.textContent =  "Start ->" + dateOfStart + "st " + monthOfStart;
+            shortestEndStart.textContent =  "Arrive on ->" + dateOfEnd + "st " + monthOfEnd;
         }
         
         function findShortestRoute(routeMap, start, end) {
@@ -67,21 +83,25 @@ document.getElementById("calculate").addEventListener("click", calculateDelivery
                 if (current.node === end) {
                     let possibleRoutes = Array.from(queue);
                     possibleRoutes = possibleRoutes.filter(routes => routes.node == end);
-                    let closest = possibleRoutes.reduce(
-                        (acc, loc) => {
-                                return acc.days <= loc.days
-                                ? acc
-                                : loc
-                            
+                    if (possibleRoutes.length !== 0) {
+                        let closest = possibleRoutes.reduce(
+                            (acc, loc) => {
+                                    return acc.days <= loc.days
+                                    ? acc
+                                    : loc
+                                
+                            }
+    
+    
+                          )
+                        if (closest.days >= current.days) {
+                            return current;
+                        } else {
+                            return closest;
                         }
-
-
-                      )
-                    if (closest.days >= current.days) {
-                        return current;
-                    } else {
-                        return closest;
                     }
+                    return current;
+
                 }
                 
                 for (const neighbor in routeMap[current.node]) {
