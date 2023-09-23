@@ -78,7 +78,14 @@ document.getElementById("calculate").addEventListener("click", calculateDelivery
             const route = result.route.join(" -> ");
             const dateOfStart = startDate.getDate();
             const monthOfStart = startDate.toLocaleString('default', { month: 'long' });
-            shortestRoute.textContent = `Route: ${route}\nTotal Days: ${ routeKms.join("+") + "+" + weekends + "= " + result.days + " Days"}`;
+
+            var totDays = "";
+            if (weekends == 0 && routeKms.length <= 1) {
+                totDays = result.days;
+            } else {
+                totDays = routeKms.join("+") + "+" + weekends + "= " + result.days;
+            }
+            shortestRoute.textContent = `Route: ${route}\nTotal Days: ${ totDays + " Days"}`;
             shortestRouteStart.textContent =  "Start ->" + dateOfStart + "st " + monthOfStart;
             shortestEndStart.textContent =  "Arrive on ->" + dateOfEnd + "st " + monthOfEnd;
         }
