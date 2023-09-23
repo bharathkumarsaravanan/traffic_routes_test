@@ -48,14 +48,16 @@ document.getElementById("calculate").addEventListener("click", calculateDelivery
             
             const result = findShortestRoute(routeMap, start, end);
             
-            const routePath = result.route;
-            var routeKms = [];
-            for (var i = 0; i < routePath.length-1; i++) {
-                routeKms.push(routeMap[routePath[i]][routePath[i+1]]);    
-            }
+
             if (!result) {
                 document.getElementById("result").textContent = "Route not found";
                 return;
+            } else {
+                const routePath = result.route;
+                var routeKms = [];
+                for (var i = 0; i < routePath.length-1; i++) {
+                    routeKms.push(routeMap[routePath[i]][routePath[i+1]]);    
+                }
             }
             
             let currentDate = new Date(startDate);
