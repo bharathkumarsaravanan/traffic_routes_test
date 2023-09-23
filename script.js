@@ -13,9 +13,9 @@ document.getElementById("calculate").addEventListener("click", calculateDelivery
             routeResult.textContent = "";
 
 
-            shortestRoute.innerHTML = "";
-            shortestRouteStart.innerHTML = "";
-            shortestEndStart.innerHTML = "";
+            shortestRoute.textContent = "";
+            shortestRouteStart.textContent = "";
+            shortestEndStart.textContent = "";
             
             const routeMap = {
                 "Tirunelveli": {
