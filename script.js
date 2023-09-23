@@ -48,6 +48,11 @@ document.getElementById("calculate").addEventListener("click", calculateDelivery
             
             const result = findShortestRoute(routeMap, start, end);
             
+            const routePath = result.route;
+            var routeKms = [];
+            for (var i = 0; i < routePath.length-1; i++) {
+                routeKms.push(routeMap[routePath[i]][routePath[i+1]]);    
+            }
             if (!result) {
                 document.getElementById("result").textContent = "Route not found";
                 return;
@@ -55,20 +60,23 @@ document.getElementById("calculate").addEventListener("click", calculateDelivery
             
             let currentDate = new Date(startDate);
             let totalDays = result.days;
+            let weekends = 0;
             
             while (totalDays > 0) {
                 currentDate.setDate(currentDate.getDate() + 1);
                 if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
                     totalDays--;
+                } else {
+                    weekends++;
                 }
             }
-            
+            result.days = result.days + weekends;
             const dateOfEnd = currentDate.getDate();
             const monthOfEnd = currentDate.toLocaleString('default', { month: 'long' });
             const route = result.route.join(" -> ");
             const dateOfStart = startDate.getDate();
             const monthOfStart = startDate.toLocaleString('default', { month: 'long' });
-            shortestRoute.textContent = `Route: ${route}\nTotal Days: ${result.days + " Days"}`;
+            shortestRoute.textContent = `Route: ${route}\nTotal Days: ${ routeKms.join("+") + "+" + weekends + "= " + result.days + " Days"}`;
             shortestRouteStart.textContent =  "Start ->" + dateOfStart + "st " + monthOfStart;
             shortestEndStart.textContent =  "Arrive on ->" + dateOfEnd + "st " + monthOfEnd;
         }
